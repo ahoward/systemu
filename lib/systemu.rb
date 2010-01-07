@@ -258,32 +258,32 @@ if defined? JRUBY_VERSION
       process = java.lang.Runtime.runtime.exec split_argv.to_java(:string)
       
       stdout, stderr = [process.input_stream, process.error_stream].map do |stream|
-        reader = StreamReader.new(stream)
-        reader.run
-        reader.result
+        StreamReader.new(stream)
       end
 
       exit_code = process.wait_for
-      [RubyProcess::RubyStatus.new_process_status(JRuby.runtime, exit_code), stdout, stderr]
+      [
+        RubyProcess::RubyStatus.new_process_status(JRuby.runtime, exit_code), 
+        stdout.join, 
+        stderr.join
+      ]
     end
     
     class StreamReader
       def initialize(stream)
-        @reader = java.io.BufferedReader.new java.io.InputStreamReader.new(stream)
-        @mutex = Mutex.new
         @data = ""
-      end
-      
-      def run
-        Thread.new do
-          @mutex.synchronize do 
-            while line = @reader.read_line; @data << line << "\n"; end
+        @thread = Thread.new do
+          reader = java.io.BufferedReader.new java.io.InputStreamReader.new(stream)
+          
+          while line = reader.read_line
+            @data << line << "\n"
           end
         end
       end
       
-      def result
-        @mutex.synchronize { @data }
+      def join
+        @thread.join
+        @data
       end
     end
   end
