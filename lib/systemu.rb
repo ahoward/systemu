@@ -247,6 +247,50 @@ class SystemUniversal
   end
 end
 
+# some monkeypatching for JRuby
+if defined? JRUBY_VERSION
+  require 'jruby'
+  import org.jruby.RubyProcess
+        
+  class SystemUniversal
+    def systemu
+      split_argv = JRuby::PathHelper.smart_split_command @argv
+      process = java.lang.Runtime.runtime.exec split_argv.to_java(:string)
+      
+      stdout, stderr = [process.input_stream, process.error_stream].map do |stream|
+        StreamReader.new(stream)
+      end
+
+      exit_code = process.wait_for
+      [
+        RubyProcess::RubyStatus.new_process_status(JRuby.runtime, exit_code), 
+        stdout.join, 
+        stderr.join
+      ]
+    end
+    
+    class StreamReader
+      def initialize(stream)
+        @data = ""
+        @thread = Thread.new do
+          reader = java.io.BufferedReader.new java.io.InputStreamReader.new(stream)
+          
+          while line = reader.read_line
+            @data << line << "\n"
+          end
+        end
+      end
+      
+      def join
+        @thread.join
+        @data
+      end
+    end
+  end
+end
+  
+
+
 SystemU = SystemUniversal unless defined? SystemU
 Systemu = SystemUniversal unless defined? Systemu
 
