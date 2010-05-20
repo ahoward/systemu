@@ -16,6 +16,9 @@ INSTALL
   gem install systemu
 
 HISTORY
+  2.0.0
+    - versioning issue.  new gem release.
+
   1.3.1
     - updates for ruby 1.9.1
 
@@ -50,7 +53,7 @@ SAMPLES
 
   ~ > ruby samples/a.rb
 
-    [#<Process::Status: pid=2891,exited(0)>, "Thu May 20 13:16:02 -0600 2010\n", "Thu May 20 13:16:02 -0600 2010\n"]
+    [#<Process::Status: pid=3359,exited(0)>, "Thu May 20 13:21:48 -0600 2010\n", "Thu May 20 13:21:48 -0600 2010\n"]
 
 
   <========< samples/b.rb >========>
@@ -72,7 +75,7 @@ SAMPLES
 
   ~ > ruby samples/b.rb
 
-    [#<Process::Status: pid=2896,exited(0)>, "Thu May 20 13:16:02 -0600 2010\n", "Thu May 20 13:16:02 -0600 2010\n"]
+    [#<Process::Status: pid=3364,exited(0)>, "Thu May 20 13:21:48 -0600 2010\n", "Thu May 20 13:21:48 -0600 2010\n"]
 
 
   <========< samples/c.rb >========>
@@ -160,7 +163,7 @@ SAMPLES
 
   ~ > ruby samples/f.rb
 
-    #<Process::Status: pid=2916,signaled(SIGKILL=9)>
-    "1274382962\n1274382963\n1274382964\n"
+    #<Process::Status: pid=3384,signaled(SIGKILL=9)>
+    "1274383308\n1274383309\n1274383310\n"
 
 
