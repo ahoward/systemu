@@ -208,23 +208,27 @@ BEGIN {
 
     def unindent(s)
       indent = nil
-      s.each do |line|
-      next if line =~ %r/^\s*$/
-      indent = line[%r/^\s*/] and break
+      s.each_line do |line|
+        next if line =~ %r/^\s*$/
+        indent = line[%r/^\s*/] and break
+      end
+      indent ? s.gsub(%r/^#{ indent }/, "") : s
     end
-    indent ? s.gsub(%r/^#{ indent }/, "") : s
-  end
+
     extend self
   end
 
   class Template
     def initialize(&block)
       @block = block
+      @binding = @block.respond_to?(:binding) ? @block.binding : @block
       @template = block.call.to_s
     end
+
     def expand(b=nil)
-      ERB.new(Util.unindent(@template)).result(b||@block)
+      ERB.new(Util.unindent(@template)).result(b||@binding)
     end
+
     alias_method 'to_s', 'expand'
   end
   def Template(*args, &block) Template.new(*args, &block) end

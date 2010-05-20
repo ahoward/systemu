@@ -8,7 +8,7 @@ Gem::Specification::new do |spec|
   spec.summary = "systemu"
   spec.description = "description: systemu kicks the ass"
 
-  spec.files = ["lib", "lib/systemu.rb", "LICENSE", "Rakefile", "README.erb", "samples", "samples/a.rb", "samples/b.rb", "samples/c.rb", "samples/d.rb", "samples/e.rb", "samples/f.rb", "systemu.gemspec"]
+  spec.files = ["lib", "lib/systemu.rb", "LICENSE", "Rakefile", "README", "README.erb", "samples", "samples/a.rb", "samples/b.rb", "samples/c.rb", "samples/d.rb", "samples/e.rb", "samples/f.rb", "systemu.gemspec"]
   spec.executables = []
   
   spec.require_path = "lib"

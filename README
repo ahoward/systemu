@@ -16,6 +16,9 @@ INSTALL
   gem install systemu
 
 HISTORY
+  1.3.1
+    - updates for ruby 1.9.1
+
   1.3.0
     - move to github
 
@@ -47,7 +50,7 @@ SAMPLES
 
   ~ > ruby samples/a.rb
 
-    [#<Process::Status: pid=5138,exited(0)>, "Thu Jan 07 13:19:37 -0700 2010\n", "Thu Jan 07 13:19:37 -0700 2010\n"]
+    [#<Process::Status: pid=2891,exited(0)>, "Thu May 20 13:16:02 -0600 2010\n", "Thu May 20 13:16:02 -0600 2010\n"]
 
 
   <========< samples/b.rb >========>
@@ -69,7 +72,7 @@ SAMPLES
 
   ~ > ruby samples/b.rb
 
-    [#<Process::Status: pid=5143,exited(0)>, "Thu Jan 07 13:19:38 -0700 2010\n", "Thu Jan 07 13:19:38 -0700 2010\n"]
+    [#<Process::Status: pid=2896,exited(0)>, "Thu May 20 13:16:02 -0600 2010\n", "Thu May 20 13:16:02 -0600 2010\n"]
 
 
   <========< samples/c.rb >========>
@@ -157,7 +160,7 @@ SAMPLES
 
   ~ > ruby samples/f.rb
 
-    #<Process::Status: pid=5163,signaled(SIGKILL=9)>
-    "1262895578\n1262895579\n1262895580\n"
+    #<Process::Status: pid=2916,signaled(SIGKILL=9)>
+    "1274382962\n1274382963\n1274382964\n"
 
 
