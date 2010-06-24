@@ -14,7 +14,7 @@ class SystemUniversal
 #
 # constants
 #
-  SystemUniversal::VERSION = '2.0.0' unless SystemUniversal.send(:const_defined?, :VERSION)
+  SystemUniversal::VERSION = '2.1.0' unless SystemUniversal.send(:const_defined?, :VERSION)
   def SystemUniversal.version() SystemUniversal::VERSION end
   def version() SystemUniversal::VERSION end
 #
@@ -34,8 +34,12 @@ class SystemUniversal
     system('%s -e 42' % 'ruby') ? 'ruby' : warn('no ruby in PATH/CONFIG')
   end
 
-  class << self
+  class << SystemUniversal
     %w( host ppid pid ruby turd ).each{|a| attr_accessor a}
+
+    def quote(*words)
+      words.map{|word| word.inspect}.join(' ')
+    end
   end
 
 #
@@ -69,7 +73,7 @@ class SystemUniversal
         thread = nil
 
         quietly{
-          IO.popen "#{ @ruby } #{ c['program'] }", 'r+' do |pipe|
+          IO.popen "#{ quote(@ruby) } #{ quote(c['program']) }", 'r+' do |pipe|
             line = pipe.gets
             case line
               when %r/^pid: \d+$/
@@ -111,6 +115,10 @@ class SystemUniversal
         [status, IO.read(c['stdout']), IO.read(c['stderr'])]
       end
     end
+  end
+
+  def quote *args, &block
+    SystemUniversal.quote(*args, &block)
   end
 
   def new_thread cid, block 
