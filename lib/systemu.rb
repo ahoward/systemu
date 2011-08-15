@@ -174,6 +174,10 @@ class SystemUniversal
     <<-program
       PIPE = STDOUT.dup
       begin
+        begin
+          require 'psych'
+        rescue LoadError
+        end
         require 'yaml'
 
         config = YAML.load(IO.read('#{ config }'))
