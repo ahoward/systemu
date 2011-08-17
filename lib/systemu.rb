@@ -4,7 +4,6 @@ require 'socket'
 require 'fileutils'
 require 'rbconfig'
 require 'thread'
-require 'yaml'
 
 class Object
   def systemu(*a, &b) SystemUniversal.new(*a, &b).systemu end
@@ -14,7 +13,7 @@ class SystemUniversal
 #
 # constants
 #
-  SystemUniversal::VERSION = '2.2.0' unless SystemUniversal.send(:const_defined?, :VERSION)
+  SystemUniversal::VERSION = '2.3.0' unless SystemUniversal.send(:const_defined?, :VERSION)
   def SystemUniversal.version() SystemUniversal::VERSION end
   def version() SystemUniversal::VERSION end
 #
@@ -155,7 +154,7 @@ class SystemUniversal
     c['stdout'] = stdout 
     c['stderr'] = stderr 
     c['program'] = program 
-    open(config, 'w'){|f| YAML.dump c, f}
+    open(config, 'w'){|f| Marshal.dump(c, f)}
 
     open(program, 'w'){|f| f.write child_program(config)}
 
@@ -176,7 +175,7 @@ class SystemUniversal
       begin
         require 'yaml'
 
-        config = YAML.load(IO.read('#{ config }'))
+        config = Marshal.load(IO.read('#{ config }'))
 
         argv = config['argv']
         env = config['env']
