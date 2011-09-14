@@ -13,7 +13,7 @@ class SystemUniversal
 #
 # constants
 #
-  SystemUniversal::VERSION = '2.3.0' unless SystemUniversal.send(:const_defined?, :VERSION)
+  SystemUniversal::VERSION = '2.3.1' unless SystemUniversal.send(:const_defined?, :VERSION)
   def SystemUniversal.version() SystemUniversal::VERSION end
   def version() SystemUniversal::VERSION end
 #
@@ -25,7 +25,7 @@ class SystemUniversal
   @pid = Process.pid
   @turd = ENV['SYSTEMU_TURD']
 
-  c = ::Config::CONFIG
+  c = begin; ::RbConfig::CONFIG; rescue NameError; ::Config::CONFIG; end
   ruby = File.join(c['bindir'], c['ruby_install_name']) << c['EXEEXT']
   @ruby = if system('%s -e 42' % ruby)
     ruby
@@ -173,8 +173,6 @@ class SystemUniversal
     <<-program
       PIPE = STDOUT.dup
       begin
-        require 'yaml'
-
         config = Marshal.load(IO.read('#{ config }'))
 
         argv = config['argv']

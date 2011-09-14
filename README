@@ -53,7 +53,7 @@ SAMPLES
 
   ~ > ruby samples/a.rb
 
-    [#<Process::Status: pid=17907,exited(0)>, "Tue Aug 16 22:40:42 -0600 2011\n", "Tue Aug 16 22:40:42 -0600 2011\n"]
+    [#<Process::Status: pid 16667 exit 0>, "2011-09-13 20:50:37 -0600\n", "2011-09-13 20:50:37 -0600\n"]
 
 
   <========< samples/b.rb >========>
@@ -75,7 +75,7 @@ SAMPLES
 
   ~ > ruby samples/b.rb
 
-    [#<Process::Status: pid=17912,exited(0)>, "Tue Aug 16 22:40:42 -0600 2011\n", "Tue Aug 16 22:40:42 -0600 2011\n"]
+    [#<Process::Status: pid 16672 exit 0>, "2011-09-13 20:50:37 -0600\n", "2011-09-13 20:50:37 -0600\n"]
 
 
   <========< samples/c.rb >========>
@@ -163,7 +163,7 @@ SAMPLES
 
   ~ > ruby samples/f.rb
 
-    #<Process::Status: pid=17932,signaled(SIGKILL=9)>
-    "1313556042\n1313556043\n1313556044\n"
+    #<Process::Status: pid 16692 SIGKILL (signal 9)>
+    "1315968638\n1315968639\n1315968640\n"
 
 
