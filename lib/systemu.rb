@@ -25,7 +25,7 @@ class SystemUniversal
   @pid = Process.pid
   @turd = ENV['SYSTEMU_TURD']
 
-  c = ::Config::CONFIG
+  c = ::RbConfig::CONFIG
   ruby = File.join(c['bindir'], c['ruby_install_name']) << c['EXEEXT']
   @ruby = if system('%s -e 42' % ruby)
     ruby
