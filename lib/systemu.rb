@@ -259,7 +259,7 @@ end
 # some monkeypatching for JRuby
 if defined? JRUBY_VERSION
   require 'jruby'
-  import org.jruby.RubyProcess
+  java_import org.jruby.RubyProcess
         
   class SystemUniversal
     def systemu
