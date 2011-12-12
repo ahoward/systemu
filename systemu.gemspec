@@ -21,7 +21,8 @@ Gem::Specification::new do |spec|
  "samples/c.rb",
  "samples/d.rb",
  "samples/e.rb",
- "samples/f.rb"]
+ "samples/f.rb",
+ "systemu.gemspec"]
 
   spec.executables = []
   
