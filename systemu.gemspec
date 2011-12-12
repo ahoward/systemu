@@ -3,7 +3,7 @@
 
 Gem::Specification::new do |spec|
   spec.name = "systemu"
-  spec.version = "2.4.1"
+  spec.version = "2.4.2"
   spec.platform = Gem::Platform::RUBY
   spec.summary = "systemu"
   spec.description = "description: systemu kicks the ass"
@@ -21,8 +21,7 @@ Gem::Specification::new do |spec|
  "samples/c.rb",
  "samples/d.rb",
  "samples/e.rb",
- "samples/f.rb",
- "systemu.gemspec"]
+ "samples/f.rb"]
 
   spec.executables = []
   
