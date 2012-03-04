@@ -172,6 +172,8 @@ class SystemUniversal
 
   def child_program config
     <<-program
+      # encoding: utf-8
+       
       PIPE = STDOUT.dup
       begin
         config = Marshal.load(IO.read('#{ config }'))
