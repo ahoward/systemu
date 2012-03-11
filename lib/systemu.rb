@@ -173,7 +173,7 @@ class SystemUniversal
   def child_program config
     <<-program
       # encoding: utf-8
-       
+
       PIPE = STDOUT.dup
       begin
         config = Marshal.load(IO.read('#{ config }'))
@@ -274,8 +274,11 @@ if defined? JRUBY_VERSION
       end
 
       exit_code = process.wait_for
+      field = process.get_class.get_declared_field("pid")
+      field.set_accessible(true)
+      pid = field.get(process)
       [
-        RubyProcess::RubyStatus.new_process_status(JRuby.runtime, exit_code),
+        RubyProcess::RubyStatus.new_process_status(JRuby.runtime, exit_code, pid),
         stdout.join,
         stderr.join
       ]
