@@ -14,7 +14,7 @@ class SystemUniversal
 #
 # constants
 #
-  SystemUniversal::VERSION = '2.4.2' unless SystemUniversal.send(:const_defined?, :VERSION)
+  SystemUniversal::VERSION = '2.5.0' unless SystemUniversal.send(:const_defined?, :VERSION)
   def SystemUniversal.version() SystemUniversal::VERSION end
   def version() SystemUniversal::VERSION end
 #
