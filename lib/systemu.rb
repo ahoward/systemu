@@ -73,7 +73,7 @@ class SystemUniversal
         thread = nil
 
         quietly{
-          IO.popen "#{ quote(@ruby) } #{ quote(c['program']) }", 'r+' do |pipe|
+          IO.popen "#{ quote(@ruby) } #{ quote(c['program']) }", 'rb+' do |pipe|
             line = pipe.gets
             case line
               when %r/^pid: \d+$/
@@ -108,11 +108,11 @@ class SystemUniversal
       end
 
       if @stdout or @stderr
-        open(c['stdout']){|f| relay f => @stdout} if @stdout
-        open(c['stderr']){|f| relay f => @stderr} if @stderr
+        open(c['stdout'], 'rb'){|f| relay f => @stdout} if @stdout
+        open(c['stderr'], 'rb'){|f| relay f => @stderr} if @stderr
         status
       else
-        [status, IO.read(c['stdout']), IO.read(c['stderr'])]
+        [status, open(c['stdout'], 'rb'){|f| f.read}, open(c['stderr'], 'rb'){|f| f.read}]
       end
     end
   end
@@ -140,7 +140,7 @@ class SystemUniversal
     config = File.expand_path(File.join(tmp, 'config'))
 
     if @stdin
-      open(stdin, 'w'){|f| relay @stdin => f}
+      open(stdin, 'wb'){|f| relay @stdin => f}
     else
       FileUtils.touch stdin
     end
@@ -155,9 +155,9 @@ class SystemUniversal
     c['stdout'] = stdout
     c['stderr'] = stderr
     c['program'] = program
-    open(config, 'w'){|f| Marshal.dump(c, f)}
+    open(config, 'wb'){|f| Marshal.dump(c, f)}
 
-    open(program, 'w'){|f| f.write child_program(config)}
+    open(program, 'wb'){|f| f.write child_program(config)}
 
     c
   end
