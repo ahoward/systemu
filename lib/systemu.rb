@@ -171,6 +171,7 @@ class SystemUniversal
   end
 
   def child_program config
+    config = config.gsub(/'/, "\\\\'")
     <<-program
       # encoding: utf-8
 
