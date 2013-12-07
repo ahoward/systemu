@@ -17,6 +17,20 @@ Testing SystemU do
     assert{ stdout == stdin } 
   end
 
+  testing 'silly hostnames' do
+    host = SystemU.instance_variable_get('@host')
+    silly_hostname = "silly's hostname with spaces"
+    begin
+      SystemU.instance_variable_set('@host', silly_hostname)
+      assert{ SystemU.instance_variable_get('@host') == silly_hostname }
+      stdin = '42'
+      status, stdout, stderr = assert{ systemu :bin/:cat, :stdin => stdin }
+      assert{ status == 0 }
+    ensure
+      assert{ SystemU.instance_variable_set('@host', host) }
+    end
+  end
+
 end
 
 

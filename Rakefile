@@ -118,6 +118,7 @@ task :gemspec do
             spec.platform = Gem::Platform::RUBY
             spec.summary = #{ lib.inspect }
             spec.description = #{ description.inspect }
+            spec.license = "same as ruby's" 
 
             spec.files =\n#{ files.sort.pretty_inspect }
             spec.executables = #{ executables.inspect }

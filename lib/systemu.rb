@@ -14,7 +14,7 @@ class SystemUniversal
 #
 # constants
 #
-  SystemUniversal::VERSION = '2.5.2' unless SystemUniversal.send(:const_defined?, :VERSION)
+  SystemUniversal::VERSION = '2.6.0' unless SystemUniversal.send(:const_defined?, :VERSION)
   def SystemUniversal.version() SystemUniversal::VERSION end
   def version() SystemUniversal::VERSION end
 #
@@ -217,11 +217,21 @@ class SystemUniversal
     end
   end
 
+  def slug_for(*args)
+    options = args.last.is_a?(Hash) ? args.pop : {}
+    join = (options[:join] || options['join'] || '_').to_s
+    string = args.flatten.compact.join(join)
+    words = string.to_s.scan(%r|[/\w]+|)
+    words.map!{|word| word.gsub %r|[^/0-9a-zA-Z_-]|, ''}
+    words.delete_if{|word| word.nil? or word.strip.empty?}
+    words.join(join).downcase.gsub('/', (join * 2))
+  end
+
   def tmpdir d = Dir.tmpdir, max = 42, &b
     i = -1 and loop{
       i += 1
 
-      tmp = File.join d, "systemu_#{ @host }_#{ @ppid }_#{ @pid }_#{ rand }_#{ i += 1 }"
+      tmp = File.join(d, slug_for("systemu_#{ @host }_#{ @ppid }_#{ @pid }_#{ rand }_#{ i += 1 }"))
 
       begin
         Dir.mkdir tmp
