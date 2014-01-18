@@ -7,7 +7,7 @@ Gem::Specification::new do |spec|
   spec.platform = Gem::Platform::RUBY
   spec.summary = "systemu"
   spec.description = "description: systemu kicks the ass"
-  spec.license = "same as ruby's" 
+  spec.license = "Ruby" 
 
   spec.files =
 ["LICENSE",
