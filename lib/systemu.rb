@@ -206,7 +206,7 @@ class SystemUniversal
 
   def relay srcdst
     src, dst, ignored = srcdst.to_a.first
-    if src.respond_to? 'read'
+    if src.respond_to? 'read' and not (src.respond_to? 'external_encoding' and src.external_encoding != 'ASCII-8BIT')
       while((buf = src.read(8192))); dst << buf; end
     else
       if src.respond_to?(:each_line)
