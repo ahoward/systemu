@@ -32,7 +32,7 @@ def run_tests!(which = nil)
 
   test_rbs.each_with_index do |test_rb, index|
     testno = index + 1
-    command = "#{ This.ruby } -I ./lib -I ./test/lib #{ test_rb }"
+    command = "#{ This.ruby } -w -I ./lib -I ./test/lib #{ test_rb }"
 
     puts
     say(div, :color => :cyan, :bold => true)
@@ -63,7 +63,7 @@ end
 task :gemspec do
   ignore_extensions = ['git', 'svn', 'tmp', /sw./, 'bak', 'gem']
   ignore_directories = ['pkg']
-  ignore_files = ['test/log', 'a.rb']
+  ignore_files = ['test/log']
 
   shiteless = 
     lambda do |list|
@@ -93,6 +93,7 @@ task :gemspec do
   test_files  = "test/#{ lib }.rb" if File.file?("test/#{ lib }.rb")
   summary     = object.respond_to?(:summary) ? object.summary : "summary: #{ lib } kicks the ass"
   description = object.respond_to?(:description) ? object.description : "description: #{ lib } kicks the ass"
+  license     = object.respond_to?(:license) ? object.license : "same as ruby's"
 
   if This.extensions.nil?
     This.extensions = []
@@ -118,7 +119,7 @@ task :gemspec do
             spec.platform = Gem::Platform::RUBY
             spec.summary = #{ lib.inspect }
             spec.description = #{ description.inspect }
-            spec.license = "same as ruby's" 
+            spec.license = #{ license.inspect }
 
             spec.files =\n#{ files.sort.pretty_inspect }
             spec.executables = #{ executables.inspect }
@@ -179,8 +180,8 @@ task :readme do
   end
 
   template = 
-    if test(?e, 'readme.erb')
-      Template{ IO.read('readme.erb') }
+    if test(?e, 'README.erb')
+      Template{ IO.read('README.erb') }
     else
       Template {
         <<-__
@@ -278,7 +279,7 @@ BEGIN {
 
 # discover full path to this ruby executable
 #
-  c = begin; ::RbConfig::CONFIG; rescue NameError; ::Config::CONFIG; end
+  c = Config::CONFIG
   bindir = c["bindir"] || c['BINDIR']
   ruby_install_name = c['ruby_install_name'] || c['RUBY_INSTALL_NAME'] || 'ruby'
   ruby_ext = c['EXEEXT'] || ''

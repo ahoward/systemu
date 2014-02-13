@@ -14,9 +14,12 @@ class SystemUniversal
 #
 # constants
 #
-  SystemUniversal::VERSION = '2.6.0' unless SystemUniversal.send(:const_defined?, :VERSION)
+  SystemUniversal::VERSION = '2.6.1' unless SystemUniversal.send(:const_defined?, :VERSION)
   def SystemUniversal.version() SystemUniversal::VERSION end
   def version() SystemUniversal::VERSION end
+  def SystemUniversal.description
+    "universal capture of stdout and stderr and handling of child process pid for windows, *nix, etc."
+  end
 #
 # class methods
 #
