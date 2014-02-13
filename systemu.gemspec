@@ -6,7 +6,7 @@ Gem::Specification::new do |spec|
   spec.version = "2.6.0"
   spec.platform = Gem::Platform::RUBY
   spec.summary = "systemu"
-  spec.description = "description: systemu kicks the ass"
+  spec.description = "univeral capture of stdout and stderr and handling of child process pid for windows, *nix, etc."
   spec.license = "same as ruby's" 
 
   spec.files =
