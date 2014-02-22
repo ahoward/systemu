@@ -3,7 +3,7 @@
 
 Gem::Specification::new do |spec|
   spec.name = "systemu"
-  spec.version = "2.6.2"
+  spec.version = "2.6.3"
   spec.platform = Gem::Platform::RUBY
   spec.summary = "systemu"
   spec.description = "universal capture of stdout and stderr and handling of child process pid for windows, *nix, etc."
@@ -34,8 +34,7 @@ Gem::Specification::new do |spec|
 
   spec.test_files = nil
 
-### spec.add_dependency 'lib', '>= version'
-#### spec.add_dependency 'map'
+  
 
   spec.extensions.push(*[])
 
