@@ -124,9 +124,9 @@ class SystemUniversal
     SystemUniversal.quote(*args, &block)
   end
 
-  def new_thread cid, block
+  def new_thread child_pid, block
     q = Queue.new
-    Thread.new(cid) do |cid|
+    Thread.new(child_pid) do |cid|
       current = Thread.current
       current.abort_on_exception = true
       q.push current
@@ -208,9 +208,9 @@ class SystemUniversal
   end
 
   def relay srcdst
-    src, dst, ignored = srcdst.to_a.first
+    src, dst, _ = srcdst.to_a.first
     if src.respond_to? 'read'
-      while((buf = src.read(8192))); dst << buf; end
+      while((buffer = src.read(8192))); dst << buffer; end
     else
       if src.respond_to?(:each_line)
         src.each_line{|buf| dst << buf}
@@ -259,11 +259,11 @@ class SystemUniversal
 
   def getopts opts = {}
     lambda do |*args|
-      keys, default, ignored = args
+      keys, default, _ = args
       catch(:opt) do
         [keys].flatten.each do |key|
-          [key, key.to_s, key.to_s.intern].each do |key|
-            throw :opt, opts[key] if opts.has_key?(key)
+          [key, key.to_s, key.to_s.intern].each do |k|
+            throw :opt, opts[k] if opts.has_key?(k)
           end
         end
         default
