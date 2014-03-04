@@ -7,7 +7,7 @@ Gem::Specification::new do |spec|
   spec.platform = Gem::Platform::RUBY
   spec.summary = "systemu"
   spec.description = "universal capture of stdout and stderr and handling of child process pid for windows, *nix, etc."
-  spec.license = "same as ruby's"
+  spec.license = "Ruby"
 
   spec.files =
 ["LICENSE",
