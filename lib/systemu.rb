@@ -179,7 +179,7 @@ class SystemUniversal
 
       PIPE = STDOUT.dup
       begin
-        config = Marshal.load(IO.read('#{ config }'))
+        config = Marshal.load(IO.read('#{ config }',:mode=>"rb"))
 
         argv = config['argv']
         env = config['env']
