@@ -14,7 +14,7 @@ class SystemUniversal
 #
 # constants
 #
-  SystemUniversal::VERSION = '2.6.4' unless SystemUniversal.send(:const_defined?, :VERSION)
+  SystemUniversal::VERSION = '2.6.5' unless SystemUniversal.send(:const_defined?, :VERSION)
   def SystemUniversal.version() SystemUniversal::VERSION end
   def version() SystemUniversal::VERSION end
   def SystemUniversal.description
@@ -179,7 +179,7 @@ class SystemUniversal
 
       PIPE = STDOUT.dup
       begin
-        config = Marshal.load(IO.read('#{ config }'))
+        config = Marshal.load(IO.read('#{ config }',:mode=>"rb"))
 
         argv = config['argv']
         env = config['env']
