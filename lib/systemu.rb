@@ -28,6 +28,7 @@ class SystemUniversal
   @ppid = Process.ppid
   @pid = Process.pid
   @turd = ENV['SYSTEMU_TURD']
+  @ruby = nil
 
   def self.ruby
     return @ruby if @ruby
