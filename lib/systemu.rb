@@ -28,17 +28,22 @@ class SystemUniversal
   @ppid = Process.ppid
   @pid = Process.pid
   @turd = ENV['SYSTEMU_TURD']
+  @ruby = nil
 
-  c = begin; ::RbConfig::CONFIG; rescue NameError; ::Config::CONFIG; end
-  ruby = File.join(c['bindir'], c['ruby_install_name']) << c['EXEEXT']
-  @ruby = if system('%s -e 42' % ruby)
-    ruby
-  else
-    system('%s -e 42' % 'ruby') ? 'ruby' : warn('no ruby in PATH/CONFIG')
+  def self.ruby
+    return @ruby if @ruby
+
+    c = begin; ::RbConfig::CONFIG; rescue NameError; ::Config::CONFIG; end
+    ruby = File.join(c['bindir'], c['ruby_install_name']) << c['EXEEXT']
+    @ruby = if system('%s -e 42' % ruby)
+      ruby
+    else
+      system('%s -e 42' % 'ruby') ? 'ruby' : warn('no ruby in PATH/CONFIG')
+    end
   end
 
   class << SystemUniversal
-    %w( host ppid pid ruby turd ).each{|a| attr_accessor a}
+    %w( host ppid pid turd ).each{|a| attr_accessor a}
 
     def quote(*words)
       words.map{|word| word.inspect}.join(' ')
