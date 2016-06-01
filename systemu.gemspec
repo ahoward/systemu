@@ -1,9 +1,11 @@
 ## systemu.gemspec
 #
 
+$:.push File.expand_path("../lib", __FILE__)
+
 Gem::Specification::new do |spec|
   spec.name = "systemu"
-  spec.version = "2.6.5"
+  spec.version = "2.6.6"
   spec.platform = Gem::Platform::RUBY
   spec.summary = "systemu"
   spec.description = "universal capture of stdout and stderr and handling of child process pid for windows, *nix, etc."
