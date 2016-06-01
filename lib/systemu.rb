@@ -301,10 +301,10 @@ if defined? JRUBY_VERSION
         field.set_accessible(true)
         handl = field.get_long(process)
 
-        krnl = Kernel32.INSTANCE
-        handle = WinNT.HANDLE()
-        handle.setPointer(Pointer.createConstant(hanld))
-        pid = kernel.GetProcessId(handle)
+        krnl = com.sun.jna.platform.win32.Kernel32.INSTANCE
+        handle = com.sun.jna.platform.win32.WinNT::HANDLE.new
+        handle.setPointer(com.sun.jna.Pointer.createConstant(hanld))
+        pid = krnl.GetProcessId(handle)
       end
       thread = new_thread pid, @block if @block
       exit_code = process.wait_for
