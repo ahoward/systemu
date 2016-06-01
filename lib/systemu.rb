@@ -297,14 +297,10 @@ if defined? JRUBY_VERSION
         field.set_accessible(true)
         pid = field.get_int(process)
       else
-        # Load jars
-        require './jna.jar'
-        require './jna-platform.jar'
-
         # Import java classes
         java_import com.sun.jna.Pointer
-        java_import com.sun.jna.plarform.win32.Kernel32
-        java_import com.sun.jna.plarform.win32.WinNT
+        java_import com.sun.jna.platform.win32.Kernel32
+        java_import com.sun.jna.platform.win32.WinNT
 
         field = process.get_class.get_declared_field("handle")
         field.set_accessible(true)
