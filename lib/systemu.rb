@@ -291,9 +291,21 @@ if defined? JRUBY_VERSION
         StreamReader.new(stream)
       end
 
-      field = process.get_class.get_declared_field("pid")
-      field.set_accessible(true)
-      pid = field.get(process)
+      pid = nil
+      if process.get_class.get_name == "java.lang.UNIXProcess"
+        field = process.get_class.get_declared_field("pid")
+        field.set_accessible(true)
+        pid = field.get_int(process)
+      else
+        field = process.get_class.get_declared_field("pid")
+        field.set_accessible(true)
+        handl = field.get_long(process)
+
+        krnl = Kernel32.INSTANCE
+        handle = WinNT.HANDLE()
+        handle.setPointer(Pointer.createConstant(hanld))
+        pid = kernel.GetProcessId(handle)
+      end
       thread = new_thread pid, @block if @block
       exit_code = process.wait_for
       [
