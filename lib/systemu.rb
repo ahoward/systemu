@@ -308,7 +308,7 @@ if defined? JRUBY_VERSION
 
         krnl = Kernel32.INSTANCE
         handle = WinNT::HANDLE.new
-        handle.setPointer(Pointer.createConstant(hanld))
+        handle.setPointer(Pointer.createConstant(handl))
         pid = krnl.GetProcessId(handle)
       end
       thread = new_thread pid, @block if @block
