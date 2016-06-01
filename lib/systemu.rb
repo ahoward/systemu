@@ -297,7 +297,7 @@ if defined? JRUBY_VERSION
         field.set_accessible(true)
         pid = field.get_int(process)
       else
-        field = process.get_class.get_declared_field("pid")
+        field = process.get_class.get_declared_field("handle")
         field.set_accessible(true)
         handl = field.get_long(process)
 
