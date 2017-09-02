@@ -1,40 +1,28 @@
 ## systemu.gemspec
 #
 
+$:.push File.expand_path("../lib", __FILE__)
+
 Gem::Specification::new do |spec|
   spec.name = "systemu"
-  spec.version = "2.6.4"
+  spec.version = "2.6.6"
   spec.platform = Gem::Platform::RUBY
   spec.summary = "systemu"
   spec.description = "universal capture of stdout and stderr and handling of child process pid for windows, *nix, etc."
   spec.license = "Ruby"
 
-  spec.files =
-["LICENSE",
- "README",
- "README.erb",
- "Rakefile",
- "lib",
- "lib/systemu.rb",
- "samples",
- "samples/a.rb",
- "samples/b.rb",
- "samples/c.rb",
- "samples/d.rb",
- "samples/e.rb",
- "samples/f.rb",
- "systemu.gemspec",
- "test",
- "test/systemu_test.rb",
- "test/testing.rb"]
+  spec.files = `git ls-files`.split("\n").
+    select { |f| f =~ /^(lib)/ ||
+                 f =~ /^History|LICENSE|README|Rakefile|Mavenfile|pom.xml/i } +
+    Dir.glob('lib/**/*.jar') # 'lib/jopenssl.jar' and potentially BC jars
 
   spec.executables = []
-  
+
   spec.require_path = "lib"
 
   spec.test_files = nil
 
-  
+
 
   spec.extensions.push(*[])
 
