@@ -35,10 +35,10 @@ class SystemUniversal
 
     c = begin; ::RbConfig::CONFIG; rescue NameError; ::Config::CONFIG; end
     ruby = File.join(c['bindir'], c['ruby_install_name']) << c['EXEEXT']
-    @ruby = if system(ruby, '-e', '42')
+    @ruby = if system(ruby, '--disable-gems', '-e', '42')
       ruby
     else
-      system('ruby', '-e', '42') ? 'ruby' : warn('no ruby in PATH/CONFIG')
+      system('ruby', '--disable-gems', '-e', '42') ? 'ruby' : warn('no ruby in PATH/CONFIG')
     end
   end
 
