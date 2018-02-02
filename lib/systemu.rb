@@ -294,7 +294,7 @@ if defined? JRUBY_VERSION
       field = process.get_class.get_declared_field("pid")
       field.set_accessible(true)
       pid = field.get(process)
-      thread = new_thread pid, @block if @block
+      _thread = new_thread pid, @block if @block
       exit_code = process.wait_for
       [
         RubyProcess::RubyStatus.new_process_status(JRuby.runtime, exit_code, pid),
