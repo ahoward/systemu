@@ -12,6 +12,12 @@ end
 
 class SystemUniversal
 #
+# error class
+#
+  class Error < RuntimeError
+  end
+
+#
 # constants
 #
   SystemUniversal::VERSION = '2.6.5' unless SystemUniversal.send(:const_defined?, :VERSION)
@@ -94,7 +100,7 @@ class SystemUniversal
                   raise unless Exception === e
                   raise e
                 rescue
-                  raise "systemu: Error - process interrupted!\n#{ buf }\n"
+                  raise Error "systemu: Error - process interrupted!\n#{ buf }\n"
                 end
             end
             thread = new_thread cid, @block if @block
@@ -244,7 +250,7 @@ class SystemUniversal
       begin
         Dir.mkdir tmp
       rescue Errno::EEXIST
-        raise if i >= max
+        raise Error if i >= max
         next
       end
 
