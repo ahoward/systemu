@@ -250,7 +250,7 @@ class SystemUniversal
       begin
         Dir.mkdir tmp
       rescue Errno::EEXIST
-        raise Error if i >= max
+        raise if i >= max
         next
       end
 
