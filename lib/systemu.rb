@@ -100,7 +100,7 @@ class SystemUniversal
                   raise unless Exception === e
                   raise e
                 rescue
-                  raise Error "systemu: Error - process interrupted!\n#{ buf }\n"
+                  raise Error, "systemu: Error - process interrupted!\n#{ buf }\n"
                 end
             end
             thread = new_thread cid, @block if @block
