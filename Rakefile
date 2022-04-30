@@ -3,21 +3,27 @@ This.author = "Ara T. Howard"
 This.email = "ara.t.howard@gmail.com"
 This.homepage = "https://github.com/ahoward/#{ This.lib }"
 
+desc('Write the "LICENSE" file')
 task :license do
   open('LICENSE', 'w'){|fd| fd.puts "Ruby"}
 end
 
+desc('Print all available tasks')
 task :default do
   puts((Rake::Task.tasks.map{|task| task.name.gsub(/::/,':')} - ['default']).sort)
 end
 
+desc('Run all tests')
 task :test do
   run_tests!
 end
 
 namespace :test do
+  desc('Run unit tests')
   task(:unit){ run_tests!(:unit) }
+  desc('Run functional tests')
   task(:functional){ run_tests!(:functional) }
+  desc('Run integration tests')
   task(:integration){ run_tests!(:integration) }
 end
 
@@ -59,7 +65,7 @@ def run_tests!(which = nil)
   end
 end
 
-
+desc('Write the "systemu.gemspec" file')
 task :gemspec do
   ignore_extensions = ['git', 'svn', 'tmp', /sw./, 'bak', 'gem']
   ignore_directories = ['pkg']
@@ -160,6 +166,7 @@ task :gemspec do
   This.gemspec = gemspec
 end
 
+desc('Create a new gem tar archive and move it into "pkg"')
 task :gem => [:clean, :gemspec] do
   Fu.mkdir_p(This.pkgdir)
   before = Dir['*.gem']
@@ -171,6 +178,7 @@ task :gem => [:clean, :gemspec] do
   This.gem = File.join(This.pkgdir, File.basename(gem))
 end
 
+desc('Write the "README" file')
 task :readme do
   samples = ''
   prompt = '~ > '
@@ -214,12 +222,12 @@ task :readme do
   open("README", "w"){|fd| fd.puts template}
 end
 
-
+desc('Delete everything within the "pkg" directory')
 task :clean do
   Dir[File.join(This.pkgdir, '**/**')].each{|entry| Fu.rm_rf(entry)}
 end
 
-
+desc('Create a new gem tar archive and publish it')
 task :release => [:clean, :gemspec, :gem] do
   gems = Dir[File.join(This.pkgdir, '*.gem')].flatten
   raise "which one? : #{ gems.inspect }" if gems.size > 1
