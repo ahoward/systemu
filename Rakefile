@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+require 'English'
+
 This.rubyforge_project = 'codeforpeople'
 This.author = 'Ara T. Howard'
 This.email = 'ara.t.howard@gmail.com'
@@ -27,6 +31,11 @@ namespace :test do
   task(:integration) { run_tests!(:integration) }
 end
 
+##
+# Run all tests within the "test" directory or only a certain subset
+#
+# * +which+ - the name of a subdirectory of "test" whose tests shall be executed
+#   only
 def run_tests!(which = nil)
   which ||= '**'
   test_dir = File.join(This.dir, 'test')
@@ -50,13 +59,12 @@ def run_tests!(which = nil)
 
     say(line, color: :cyan, bold: true)
 
-    status = $?.exitstatus
+    status = $CHILD_STATUS.exitstatus
 
+    say("@#{testno} <= ", bold: true, color: :white, method: :print)
     if status.zero?
-      say("@#{testno} <= ", bold: true, color: :white, method: :print)
       say('SUCCESS', color: :green, bold: true)
     else
-      say("@#{testno} <= ", bold: true, color: :white, method: :print)
       say('FAILURE', color: :red, bold: true)
     end
     say(line, color: :cyan, bold: true)
@@ -175,6 +183,8 @@ task gem: %i[clean gemspec] do
   before = Dir['*.gem']
   cmd = "gem build #{This.gemspec}"
   `#{cmd}`
+  raise 'Failed to create gem' unless $CHILD_STATUS.exited? && $CHILD_STATUS.exitstatus.zero?
+
   after = Dir['*.gem']
   gem = ((after - before).first || after.first) or abort('no gem!')
   Fu.mv(gem, This.pkgdir)
@@ -183,7 +193,7 @@ end
 
 desc('Write the "README" file')
 task :readme do
-  samples = ''
+  samples = ''.dup
   prompt = '~ > '
   lib = This.lib
   version = This.version
@@ -234,7 +244,7 @@ desc('Create a new gem tar archive and publish it')
 task release: %i[clean gemspec gem] do
   gems = Dir[File.join(This.pkgdir, '*.gem')].flatten
   raise "which one? : #{gems.inspect}" if gems.size > 1
-  raise 'no gems?' if gems.size < 1
+  raise 'no gems?' if gems.empty?
 
   cmd = "gem push #{This.gem}"
   puts cmd
@@ -377,6 +387,7 @@ BEGIN {
     on_cyan: "\e[46m",
     on_white: "\e[47m"
   }
+
   def say(phrase, *args)
     options = args.last.is_a?(Hash) ? args.pop : {}
     options[:color] = args.shift.to_s.to_sym unless args.empty?
