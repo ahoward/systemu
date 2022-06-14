@@ -1,3 +1,5 @@
+require 'rbconfig'
+
 This.rubyforge_project = 'codeforpeople'
 This.author = "Ara T. Howard"
 This.email = "ara.t.howard@gmail.com"
@@ -297,7 +299,7 @@ BEGIN {
 
 # discover full path to this ruby executable
 #
-  c = Config::CONFIG
+  c = ::RbConfig::CONFIG
   bindir = c["bindir"] || c['BINDIR']
   ruby_install_name = c['ruby_install_name'] || c['RUBY_INSTALL_NAME'] || 'ruby'
   ruby_ext = c['EXEEXT'] || ''

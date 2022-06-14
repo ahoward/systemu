@@ -36,7 +36,7 @@ class SystemUniversal
   def self.ruby
     return @ruby if @ruby
 
-    c = begin; ::RbConfig::CONFIG; rescue NameError; ::Config::CONFIG; end
+    c = ::RbConfig::CONFIG
     ruby = File.join(c['bindir'], c['ruby_install_name']) << c['EXEEXT']
     @ruby = if system(ruby, '-e', '42')
       ruby
