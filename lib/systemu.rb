@@ -11,25 +11,28 @@ class Object
 end
 
 class SystemUniversal
-#
-# constants
-#
+  #
+  # constants
+  #
   SystemUniversal::VERSION = '2.6.5' unless SystemUniversal.send(:const_defined?, :VERSION)
   def SystemUniversal.version() SystemUniversal::VERSION end
   def version() SystemUniversal::VERSION end
   def SystemUniversal.description
     "universal capture of stdout and stderr and handling of child process pid for windows, *nix, etc."
   end
-#
-# class methods
-#
 
+  #
+  # instance variables
+  #
   @host = Socket.gethostname
   @ppid = Process.ppid
   @pid = Process.pid
   @turd = ENV['SYSTEMU_TURD']
   @ruby = nil
 
+  #
+  # class methods
+  #
   def self.ruby
     return @ruby if @ruby
 
@@ -50,10 +53,9 @@ class SystemUniversal
     end
   end
 
-#
-# instance methods
-#
-
+  #
+  # instance methods
+  #
   def initialize argv, opts = {}, &block
     getopt = getopts opts
 
