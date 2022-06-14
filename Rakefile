@@ -326,11 +326,12 @@ BEGIN {
     def unindent(s)
       indent = nil
       s.each_line do |line|
-      next if line =~ %r/^\s*$/
-      indent = line[%r/^\s*/] and break
+        next if line =~ %r/^\s*$/
+        indent = line[%r/^\s*/] and break
+      end
+      indent ? s.gsub(%r/^#{ indent }/, "") : s
     end
-    indent ? s.gsub(%r/^#{ indent }/, "") : s
-  end
+
     extend self
   end
 
