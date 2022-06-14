@@ -5,21 +5,27 @@ This.author = "Ara T. Howard"
 This.email = "ara.t.howard@gmail.com"
 This.homepage = "https://github.com/ahoward/#{ This.lib }"
 
+desc('Write "Ruby" to a file "LICENSE"')
 task :license do
   open('LICENSE', 'w'){|fd| fd.puts "Ruby"}
 end
 
+desc('Print all available tasks')
 task :default do
   puts((Rake::Task.tasks.map{|task| task.name.gsub(/::/,':')} - ['default']).sort)
 end
 
+desc('Run all tests')
 task :test do
   run_tests!
 end
 
 namespace :test do
+  desc('Run tests in a sub-directory "unit" of the test directory')
   task(:unit){ run_tests!(:unit) }
+  desc('Run tests in a sub-directory "functional" of the test directory')
   task(:functional){ run_tests!(:functional) }
+  desc('Run tests in a sub-directory "integration" of the test directory')
   task(:integration){ run_tests!(:integration) }
 end
 
@@ -61,7 +67,7 @@ def run_tests!(which = nil)
   end
 end
 
-
+desc('Write the "systemu.gemspec" file')
 task :gemspec do
   ignore_extensions = ['git', 'svn', 'tmp', /sw./, 'bak', 'gem']
   ignore_directories = ['pkg']
@@ -162,6 +168,7 @@ task :gemspec do
   This.gemspec = gemspec
 end
 
+desc('Clean the "pkg" directory and (re-)create the gem file')
 task :gem => [:clean, :gemspec] do
   Fu.mkdir_p(This.pkgdir)
   before = Dir['*.gem']
@@ -173,6 +180,7 @@ task :gem => [:clean, :gemspec] do
   This.gem = File.join(This.pkgdir, File.basename(gem))
 end
 
+desc('Re-generate the "README" file from the samples and the template')
 task :readme do
   samples = ''
   prompt = '~ > '
@@ -216,12 +224,12 @@ task :readme do
   open("README", "w"){|fd| fd.puts template}
 end
 
-
+desc('Remove all files from the "pkg" directory')
 task :clean do
   Dir[File.join(This.pkgdir, '**/**')].each{|entry| Fu.rm_rf(entry)}
 end
 
-
+desc('Clean existing gems, (re-)create gem and publish')
 task :release => [:clean, :gemspec, :gem] do
   gems = Dir[File.join(This.pkgdir, '*.gem')].flatten
   raise "which one? : #{ gems.inspect }" if gems.size > 1
