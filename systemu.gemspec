@@ -38,7 +38,6 @@ Gem::Specification::new do |spec|
 
   spec.extensions.push(*[])
 
-  spec.rubyforge_project = "codeforpeople"
   spec.author = "Ara T. Howard"
   spec.email = "ara.t.howard@gmail.com"
   spec.homepage = "https://github.com/ahoward/systemu"
