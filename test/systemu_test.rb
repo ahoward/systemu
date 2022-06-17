@@ -31,6 +31,16 @@ Testing SystemU do
     end
   end
 
+  testing 'query systemu version' do
+    # query systemu's version through the class itself
+    assert { SystemU.version =~ /\d+\.\d+\.\d+/ }
+    # query systemu's version through a class instance
+    assert do
+      a = SystemU.new('ls')
+      a.version =~ /\d+\.\d+\.\d+/
+    end
+  end
+
 end
 
 
