@@ -28,6 +28,11 @@ namespace :test do
   task(:integration){ run_tests!(:integration) }
 end
 
+##
+# Run all or a sub-set of the scripts ending in "_test.rb" within the "test" dir
+#
+# The parameter "which" can be utilized to request that only tests within a
+# sub-directory of a certain name of "test" shall be executed.
 def run_tests!(which = nil)
   which ||= '**'
   test_dir = File.join(This.dir, "test")
@@ -245,8 +250,7 @@ end
 
 
 BEGIN {
-# support for this rakefile
-#
+  # support for this rakefile
   $VERBOSE = nil
 
   require 'ostruct'
@@ -255,28 +259,26 @@ BEGIN {
   require 'rbconfig'
   require 'pp'
 
-# fu shortcut
-#
+  # create a shortcut "Fu" for FileUtils
   Fu = FileUtils
 
-# cache a bunch of stuff about this rakefile/environment
-#
+  # cache a bunch of stuff about this Rakefile and its environment
   This = OpenStruct.new
 
   This.file = File.expand_path(__FILE__)
   This.dir = File.dirname(This.file)
   This.pkgdir = File.join(This.dir, 'pkg')
 
-# grok lib
-#
+  # determine the library's name
   lib = ENV['LIB']
   unless lib
+    # drop anything after (including) the last '-' from the directory name to
+    # derive the library's name
     lib = File.basename(Dir.pwd).sub(/[-].*$/, '')
   end
   This.lib = lib
 
-# grok version
-#
+  # determine the library's version
   version = ENV['VERSION']
   unless version
     require "./lib/#{ This.lib }"
@@ -286,19 +288,16 @@ BEGIN {
   end
   This.version = version
 
-# see if dependencies are export by the module
-#
+  # see if dependencies are export by the module
   if This.object.respond_to?(:dependencies)
     This.dependencies = This.object.dependencies
   end
 
-# we need to know the name of the lib an it's version
-#
+  # the library's name and version are mandatory to be known
   abort('no lib') unless This.lib
   abort('no version') unless This.version
 
-# discover full path to this ruby executable
-#
+  # discover the full path to this ruby executable
   c = ::RbConfig::CONFIG
   bindir = c["bindir"] || c['BINDIR']
   ruby_install_name = c['ruby_install_name'] || c['RUBY_INSTALL_NAME'] || 'ruby'
@@ -306,15 +305,25 @@ BEGIN {
   ruby = File.join(bindir, (ruby_install_name + ruby_ext))
   This.ruby = ruby
 
-# some utils
-#
+  ##
+  # Module with utility methods used by the Rakefile
   module Util
+    ##
+    # Indent a string "s" with a number "n" of spaces
+    #
+    # The string will be un-intended with #unindent before the new indentation
+    # is being conducted.
     def indent(s, n = 2)
       s = unindent(s)
       ws = ' ' * n
       s.gsub(%r/^/, ws)
     end
 
+    ##
+    # Unindent a string "s"
+    #
+    # The indentation of the string is determined by the leading whitespaces of
+    # the first non-empty, non-entirely-whitespace line.
     def unindent(s)
       indent = nil
       s.each_line do |line|
@@ -327,22 +336,30 @@ BEGIN {
     extend self
   end
 
-# template support
-#
+  ##
+  # Class for loading and executing ERB template code
   class Template
+    ##
+    # Create a new instance from a block returning the template's code
     def initialize(&block)
       @block = block
       @template = block.call.to_s
     end
+
+    ##
+    # Execute the ERB template's block with an optional binding
+    #
+    # If no binding is given the binding of the blocked which got passed to the
+    # initializer will be used.
     def expand(b=nil)
       ERB.new(Util.unindent(@template)).result((b||@block).binding)
     end
+
     alias_method 'to_s', 'expand'
   end
   def Template(*args, &block) Template.new(*args, &block) end
 
-# colored console output support
-#
+  # colored console output support
   This.ansi = {
     :clear      => "\e[0m",
     :reset      => "\e[0m",
@@ -372,6 +389,7 @@ BEGIN {
     :on_cyan    => "\e[46m",
     :on_white   => "\e[47m"
   }
+
   def say(phrase, *args)
     options = args.last.is_a?(Hash) ? args.pop : {}
     options[:color] = args.shift.to_s.to_sym unless args.empty?
@@ -391,7 +409,6 @@ BEGIN {
     Kernel.send(method, parts.join)
   end
 
-# always run out of the project dir
-#
+  # always run out of the project dir itself
   Dir.chdir(This.dir)
 }
