@@ -50,10 +50,50 @@ class SystemUniversal
     end
   end
 
+  ##
+  # Class for returning the result of a systemu invocation
+  #
+  # This will contain at least a member +status+ containing a Process::Status
+  # object representing the result of the subprocess invocation. If a block was
+  # passed for parallel execution in a separate thread, this thread's instance
+  # object will be stored as member +thread+.
+  #
+  # In general this class is intended as a thin wrapper around the
+  # Process::Status instance it contains. Any access other than to the +thread+
+  # member will be forwared to the +status+ object.
+  class Result
+    attr_reader(:status)
+    attr_reader(:thread)
+
+    def initialize(status, thread = nil)
+      @status = status
+      @thread = thread
+    end
+
+    def ==(arg)
+      case arg
+      when Integer
+        @status == arg
+      when Result
+        (@status == arg.status) && (@thread == arg.thread)
+      else
+        raise "No comparison between SystemU::Result and #{arg.class}"
+      end
+    end
+
+    def method_missing(sym, *args)
+      @status.send(sym, *args)
+    end
+
+    def to_s
+      @status.to_s
+    end
+  end
+
+
 #
 # instance methods
 #
-
   def initialize argv, opts = {}, &block
     getopt = getopts opts
 
@@ -101,17 +141,10 @@ class SystemUniversal
             pipe.read rescue nil
           end
         }
-        status = $?
+        status = Result.new($?)
       ensure
         if thread
-          begin
-            class << status
-              attr 'thread'
-            end
-            status.instance_eval{ @thread = thread }
-          rescue
-            42
-          end
+          status = Result.new($?, thread)
         end
       end
 
@@ -294,10 +327,13 @@ if defined? JRUBY_VERSION
       field = process.get_class.get_declared_field("pid")
       field.set_accessible(true)
       pid = field.get(process)
-      _thread = new_thread pid, @block if @block
+      thread = new_thread pid, @block if @block
       exit_code = process.wait_for
       [
-        RubyProcess::RubyStatus.new_process_status(JRuby.runtime, exit_code, pid),
+        Result.new(
+          RubyProcess::RubyStatus.new_process_status(JRuby.runtime, exit_code, pid),
+          thread
+        ),
         stdout.join,
         stderr.join
       ]
