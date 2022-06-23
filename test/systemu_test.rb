@@ -31,6 +31,21 @@ Testing SystemU do
     end
   end
 
+  testing 'invoke systemu with a block' do
+    res = systemu("sleep 0.1") { puts('Waiting') }
+    assert { res[1].instance_of?(String) }
+    assert { res[2].instance_of?(String) }
+    res = res[0]
+    assert { (res & 0xFFFF) == 0 }
+    assert { res == 0 }
+    assert { res.exited? }
+    assert { res.exitstatus == 0 }
+    assert { res.pid.instance_of?(Integer) }
+    assert { !res.signaled? }
+    assert { res.success? }
+    assert { res.to_i == 0 }
+    assert { res.to_s =~ /^pid \d+ exit 0$/ }
+  end
 end
 
 
